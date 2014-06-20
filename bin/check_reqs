@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var check_reqs = require('./lib/check_reqs');
+
+check_reqs.run().done(
+    function success() {
+        console.log('All requirements for Cordova Ripple satisfied.');
+    }, function fail(err) {
+        console.log(err);
+        process.exit(2);
+    }
+);

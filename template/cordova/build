@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+console.error('Ripple platform doesn\'t support build command. Use \'cordova run\' or \'cordova emulate\'');
+    process.exit(2);

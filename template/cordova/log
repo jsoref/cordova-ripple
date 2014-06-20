@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+console.error('Ripple platform doesn\'t support log command');
+    process.exit(2);
