@@ -1,5 +1,5 @@
-// Platform: browser
-// 3.6.0-dev-f27458f
+// Platform: ripple
+// 3.6.0-dev-454c1a3
 /*
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -19,7 +19,7 @@
  under the License.
 */
 ;(function() {
-var CORDOVA_JS_BUILD_LABEL = '3.6.0-dev-f27458f';
+var CORDOVA_JS_BUILD_LABEL = '3.6.0-dev-454c1a3';
 // file: src/scripts/require.js
 
 /*jshint -W079 */
@@ -265,7 +265,7 @@ var cordova = {
         try {
             cordova.callbackFromNative(callbackId, true, args.status, [args.message], args.keepCallback);
         } catch (e) {
-            console.log("Error in error callback: " + callbackId + " = "+e);
+            console.log("Error in success callback: " + callbackId + " = "+e);
         }
     },
 
@@ -803,30 +803,28 @@ module.exports = channel;
 
 });
 
-// file: src/browser/exec.js
+// file: src/ripple/exec.js
 define("cordova/exec", function(require, exports, module) {
+
+/*jslint sloppy:true, plusplus:true*/
+/*global require, module, console */
 
 var cordova = require('cordova');
 var execProxy = require('cordova/exec/proxy');
 
 module.exports = function(success, fail, service, action, args) {
-
-    var proxy = execProxy.get(service, action);
-
-    if (proxy) {
+    var proxy = execProxy.get(service,action);
+    if(proxy) {
         var callbackId = service + cordova.callbackId++;
-
+        //console.log("EXEC:" + service + " : " + action);
         if (typeof success == "function" || typeof fail == "function") {
             cordova.callbacks[callbackId] = {success:success, fail:fail};
         }
-
         try {
             proxy(success, fail, args);
         }
         catch(e) {
-            // TODO throw maybe?
-            var msg = "Exception calling :: " + service + " :: " + action  + " ::exception=" + e;
-            console.log(msg);
+            console.log("Exception calling native with command :: " + service + " :: " + action  + " ::exception=" + e);
         }
     }
     else {
@@ -1190,36 +1188,20 @@ exports.reset();
 
 });
 
-// file: src/browser/platform.js
+// file: src/ripple/platform.js
 define("cordova/platform", function(require, exports, module) {
 
 module.exports = {
-    id: 'browser',
-    cordovaVersion: '3.4.0',
+    id: 'ripple',
+    cordovaVersion: '3.0.0',
+    bootstrap:function() {
+        var cordova = require('cordova'),
+            exec = require('cordova/exec'),
+            channel = cordova.require('cordova/channel'),
+            modulemapper = require('cordova/modulemapper');
 
-    bootstrap: function() {
-
-        var moduleMapper = require('cordova/modulemapper');
-        var channel = require('cordova/channel');
-
-        moduleMapper.clobbers('cordova/exec/proxy', 'cordova.commandProxy');
-
-        channel.onPluginsReady.subscribe(function () {
-            channel.onNativeReady.fire();
-        });
-
-        // FIXME is this the right place to clobber pause/resume? I am guessing not
-        // FIXME pause/resume should be deprecated IN CORDOVA for pagevisiblity api
-        document.addEventListener('webkitvisibilitychange', function() {
-            if (document.webkitHidden) {
-                channel.onPause.fire();
-            }
-            else {
-                channel.onResume.fire();
-            }
-        }, false);
-
-    // End of bootstrap
+        modulemapper.clobbers('cordova/exec/proxy', 'cordova.commandProxy');
+        channel.onNativeReady.fire();
     }
 };
 
@@ -1334,6 +1316,14 @@ exports.load = function(callback) {
     }, callback);
 };
 
+
+});
+
+// file: src/ripple/ripple/commandProxy.js
+define("cordova/ripple/commandProxy", function(require, exports, module) {
+
+console.log('WARNING: please require cordova/exec/proxy instead');
+module.exports = require('cordova/exec/proxy');
 
 });
 
