@@ -35626,7 +35626,7 @@ module.exports = {
         // scandit barcode scanner @see https://github.com/Scandit/BarcodeScannerPlugin
         bridge.add("ScanditSDK", ripple('platform/cordova/3.0.0/bridge/scanditsdk'));
 
-        honeypot.monitor(win, "cordova").andRun(get, set);
+        // honeypot.monitor(win, "cordova").andRun(get, set);
 
         //HACK: BlackBerry does vibration different
         if (device.manufacturer === "BlackBerry") {
