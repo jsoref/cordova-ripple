@@ -96,6 +96,11 @@ exports.createProject = function(project_path, package_name, project_name, proje
             // shell.cp('-r', path.join(project_template_dir, 'cordova.js'), project_path);
         });
     }).then(function() {
+        // install ripple
+        shell.cd(path.join(project_path, 'ripple'));
+        // TODO don't trace this to output
+        return exec('npm install --production', null);
+    }).then(function() {
         console.log('Project successfully created.');
     });
 };
