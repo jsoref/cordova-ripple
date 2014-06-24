@@ -1,6 +1,15 @@
 #!/usr/bin/env node
 
 var build = require('./lib/build'),
+    path = require('path'),
     platformDir = process.argv[1].split('\\cordova\\build').join('');
+    args = process.argv;
 
-build(platformDir);
+// Support basic help commands
+if (args[2] == '--help' || args[2] == '/?' || args[2] == '-h' ||
+                    args[2] == 'help' || args[2] == '-help' || args[2] == '/help') {
+    build.help(args);
+} else {
+    var projectPath = path.join(args[1], '../..');
+    build(projectPath);
+}
