@@ -26,6 +26,8 @@ var shell = require('shelljs'),
     check_reqs = require('./check_reqs'),
     ROOT    = path.join(__dirname, '..', '..');
 
+    console.log('lib/create.js');
+
 // Returns a promise.
 function exec(command, opt_cwd) {
     var d = Q.defer();
@@ -58,6 +60,8 @@ function setShellFatal(value, func) {
  */
 exports.createProject = function(project_path, package_name, project_name, project_template_dir, use_shared_project, use_cli_template) {
     var VERSION = fs.readFileSync(path.join(ROOT, 'VERSION'), 'utf-8').trim();
+
+    console.log('createProject');
 
     // Set default values for path, package and name
     project_path = typeof project_path !== 'undefined' ? project_path : "RippleProject";

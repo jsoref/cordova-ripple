@@ -4,6 +4,8 @@ var path = require('path');
 var create = require('./lib/create');
 var args  = require('./lib/simpleargs').getArgs(process.argv);
 
+console.log('create.js');
+
 if (args['--help'] || args._.length === 0) {
     console.log('Usage: ' + path.relative(process.cwd(), path.join(__dirname, 'create')) + ' <path_to_new_project> <package_name> <project_name> [<template_path>] [--shared]');
     console.log('    <path_to_new_project>: Path to your new Cordova Android project');
