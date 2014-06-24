@@ -1,18 +1,13 @@
 #!/usr/bin/env node
 
-var path  = require('path'),
-    emulator = require('../../ripple/lib/server/emulate');
+var shell = require('shelljs'),
+    path = require('path');
 
-/*
- * Runs the application in ripple emulator.
- * Returns a promise.
- */
- module.exports = function(projectRoot) {
-    var wwwRoot = path.join(projectRoot, 'www');
-    console.log('Starting Ripple emulator at ' + wwwRoot);
-    var app = emulator.start({path: [wwwRoot]});
-    var uri = "http://localhost:" + app._port + "?enableripple=cordova-3.0.0";
-    require('open')(uri);
+module.exports = function(projectRoot) {
+    ["cordova.js", "config.xml"].forEach(function (file) {
+        console.log('Copying ' + file + ' to www dir...');
+        shell.cp("-f", path.join(projectRoot, file), path.join(projectRoot, 'www'));
+    });
 };
 
 module.exports.help = function(args) {

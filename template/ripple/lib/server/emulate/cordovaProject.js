@@ -4,11 +4,17 @@ var path = require('path'),
 function buildPaths(opts) {
     var paths = {
         orig: opts.path[0]
-    };
+    },
+    platforms;
 
     if(fs.existsSync(path.join(paths.orig, ".cordova")) || fs.existsSync(path.join(paths.orig, "config.xml"))) {
         console.log("Cordova 3.0 Project detected...");
-        var platforms = fs.readdirSync(path.join(paths.orig, "platforms"));
+        try{
+            platforms = fs.readdirSync(path.join(paths.orig, "platforms"));
+        } catch (e) {
+            platforms = ['ripple'];
+        }
+
         if (platforms.indexOf('android') >= 0) {
             opts.cordova = 'android';
             paths.android = path.join(paths.orig, "platforms", "android", "assets", "www");
@@ -27,6 +33,11 @@ function buildPaths(opts) {
         if (platforms.indexOf('blackberry10') >= 0) {
             opts.cordova = 'blackberry10';
             paths.blackberry = path.join(paths.orig, "platforms", "blackberry10", "www");
+        }
+
+        if (platforms.indexOf('ripple') >= 0) {
+            opts.cordova = 'ripple';
+            paths.ripple = paths.orig;
         }
     }
 
@@ -47,7 +58,7 @@ module.exports = {
                 else if (userAgent.match(/BB10/)) { pth = paths.blackberry; req.staticPlatform = "blackberry"; }
                 else if (userAgent.match(/PlayBook/)) { pth = paths.blackberry; req.staticPlatform = "blackberry"; }
                 else if (userAgent.match(/BlackBerry/)) { pth = paths.blackberry; req.staticPlatform = "blackberry"; }
-                else { pth = paths.android; req.staticPlatform = "android"; }
+                else { pth = paths.orig; req.staticPlatform = "ripple"; }
             }
 
             req.staticSource = pth;
