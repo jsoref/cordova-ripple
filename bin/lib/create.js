@@ -93,7 +93,7 @@ exports.createProject = function(project_path, package_name, project_name, proje
             // copy scripts.js
             shell.cp('-r', path.join(project_template_dir, 'cordova'), project_path);
             // copy cordova.js
-            // shell.cp('-r', path.join(project_template_dir, 'cordova.js'), project_path);
+            shell.cp('-r', path.join(ROOT, 'cordova.js'), project_path);
         });
     }).then(function() {
         // install ripple
