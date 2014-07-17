@@ -101,11 +101,6 @@ exports.createProject = function(project_path, package_name, project_name, proje
             fs.chmodSync(path.join(project_path, 'cordova/clean'), '755');
         });
     }).then(function() {
-        // install ripple
-        shell.cd(path.join(project_path, 'ripple'));
-        // TODO don't trace this to output
-        return exec('npm install --production', null);
-    }).then(function() {
         console.log('Project successfully created.');
     });
 };
