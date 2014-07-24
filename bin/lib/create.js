@@ -88,6 +88,8 @@ exports.createProject = function(project_path, package_name, project_name, proje
         console.log('Copying template files...');
 
         setShellFatal(true, function() {
+            var cordova_dir = path.join(project_path, 'cordova');
+
             // copy project template
             shell.cp('-r', path.join(project_template_dir, 'ripple'), project_path);
             // copy scripts.js
@@ -95,10 +97,16 @@ exports.createProject = function(project_path, package_name, project_name, proje
             // copy cordova.js
             shell.cp('-r', path.join(ROOT, 'cordova.js'), project_path);
             // TODO - investigate the right way
-            fs.chmodSync(path.join(project_path, 'cordova/run'), '755');
-            fs.chmodSync(path.join(project_path, 'cordova/build'), '755');
-            fs.chmodSync(path.join(project_path, 'cordova/log'), '755');
-            fs.chmodSync(path.join(project_path, 'cordova/clean'), '755');
+
+            [
+                'run',
+                'build',
+                'log',
+                'clean',
+                'version',
+            ].forEach(function (file) {
+                fs.chmodSync(path.join(cordova_dir, file), '755');
+            });
         });
     }).then(function() {
         console.log('Project successfully created.');
